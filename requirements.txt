@@ -1,0 +1,12 @@
+numpy==1.19.5
+TA-Lib==0.4.19
+cython
+requests
+gunicorn
+gevent
+pandas
+python-socketio
+websocket-client
+apscheduler
+
+
