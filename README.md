@@ -18,6 +18,7 @@ config.py的symbols_conf配置，币对的后一个值为每个币下单的量�
 仓位：Run.py这个的仓位会比较大，资金少的要减少仓位。Start.py这个目前我设定的是最低开仓，如果保证金够，可以适当增加仓位。
 
 止盈：目前，在LineWith.py的28行winPrice = entryPrice * 1.01，entryPrice为持仓价，当最新价大于winPrice止盈。
+
 止损：不存在的，浮亏就扛单，当有平仓信号时也不平仓。
 
 止盈后再开仓:在LineWith.py的35行self.order_flag_dict[symbol] = entryPrice * 0.985，entryPrice为上一次的持仓价，
