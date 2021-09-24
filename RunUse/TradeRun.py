@@ -10,12 +10,12 @@ from getaway.send_msg import bugcode, getToday
 from constant.constant import (EVENT_POS, EVENT_KLINE)
 from utils.event import EventEngine, Event
 from strategies.LineWith import LineWith
-from config import key, secret, symbols_conf
+from config import key, secret
 
 
 class TradeRun:
 
-    def __init__(self):
+    def __init__(self, symbols_conf):
         self.min_volume_dict = {}
         self.symbols_list = []
         self.symbols_dict = {}
