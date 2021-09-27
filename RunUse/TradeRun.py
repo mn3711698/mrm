@@ -10,7 +10,7 @@ from getaway.send_msg import bugcode, getToday
 from constant.constant import (EVENT_POS, EVENT_KLINE)
 from utils.event import EventEngine, Event
 from strategies.LineWith import LineWith
-from config import key, secret
+from config import key, secret, redisc
 
 
 class TradeRun:
@@ -21,6 +21,7 @@ class TradeRun:
         self.symbols_dict = {}
         self.trading_size_dict = {}
         self.kline_time_dict = {}
+        self.redisc = redisc
         self.conf_initialize(symbols_conf)
         self.bugcode = bugcode
         self.getToday = getToday
@@ -34,11 +35,11 @@ class TradeRun:
 
     def conf_initialize(self, symbolsconf):
         # 初始化dict
-        # [symbol, trading_size, rsi_over_sold,rsi_over_bought,sold_barssince, bought_barssince]
+        # [symbol, trading_size, win_arg, add_arg]
         for i in symbolsconf:
-            symbol, trading_size, rsi_over_sold, rsi_over_bought, sold_barssince, bought_barssince = i
+            symbol, trading_size, win_arg, add_arg = i
             self.symbols_list.append(symbol)
-            self.symbols_dict[symbol] = [rsi_over_sold, rsi_over_bought, sold_barssince, bought_barssince]
+            self.symbols_dict[symbol] = [win_arg, add_arg]
             self.trading_size_dict[symbol] = trading_size
 
     def initialization_data(self):
@@ -60,37 +61,42 @@ class TradeRun:
                                     self.bugcode(msg)
                                 self.min_volume_dict[_symbol] = minQty
         except:
-            self.bugcode(traceback, "TradeRunMRM_initialization_data")
+            self.bugcode(traceback, "TradeRun_initialization_data")
 
     def get_kline_data(self, symbol, sold, bought, sold_bar, bought_bar, interval):
         try:
 
             if symbol in self.symbols_dict:
                 data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
-                if len(data):
-                    kline_time = data[-1][0]
-                    if kline_time != self.kline_time_dict.get(symbol, 0):
-                        edata = {'symbol': symbol, "data": data, "sold": sold, "bought": bought,
-                                 "sold_bar": sold_bar, "bought_bar": bought_bar, 'interval': interval}
-                        event = Event(EVENT_KLINE, edata)
-                        self.broker.event_engine.put(event)
-                        self.kline_time_dict[symbol] = kline_time
-
+                if isinstance(data, list):
+                    if len(data):
+                        kline_time = data[-1][0]
+                        if kline_time != self.kline_time_dict.get(symbol, 0):
+                            edata = {'symbol': symbol, "data": data, "sold": sold, "bought": bought,
+                                     "sold_bar": sold_bar, "bought_bar": bought_bar, 'interval': interval}
+                            event = Event(EVENT_KLINE, edata)
+                            self.broker.event_engine.put(event)
+                            self.kline_time_dict[symbol] = kline_time
+                else:
+                    self.bugcode(f"{data}")
         except:
-            self.bugcode(traceback, "TradeRunMRM_get_kline_data")
+            self.bugcode(traceback, "TradeRun_get_kline_data")
 
     def get_position(self):
         try:
             info = self.broker.binance_http.get_position_info()
+            # print(info)
             if isinstance(info, list):
                 for item in info:
                     symbolm = item["symbol"]
                     positionSide = item["positionSide"]
-                    # 目前持仓为多空双向，策略仅为多方向，只处理多方向的仓位
+                    # 当持仓为多空双向，策略仅为多方向，只处理多方向的仓位
                     # if item['positionSide'] != 'LONG':
                     #     return
                     if symbolm in self.symbols_dict and positionSide == 'BOTH':
                         event = Event(EVENT_POS, {"symbol": symbolm, "pos": item})
                         self.broker.event_engine.put(event)
+            else:
+                self.bugcode(f"{info}")
         except:
-            self.bugcode(traceback, "TradeRunMRM_get_position")
+            self.bugcode(traceback, "TradeRun_get_position")

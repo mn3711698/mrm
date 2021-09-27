@@ -19,6 +19,10 @@ logging.getLogger("apscheduler").setLevel(logging.WARNING)  # 设置apscheduler.
 if __name__ == '__main__':  # 25
     RunTrade = TradeRun(symbols_conf2)
     scheduler = BlockingScheduler()  # 定时的任务.
+    minute_5 = '0,5,10,15,20,25,30,35,40,45,50,55'
+    minute_3 = '0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57'
+    minute_15 = '0,15,30,45'
+    minute_30 = '0,30'
 
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_1', second='2',
                       args=("AXSUSDT", 29, 73.5, 10, 10, '1m',))  # 1min
@@ -47,7 +51,7 @@ if __name__ == '__main__':  # 25
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_13', second='4',
                       args=("OMGUSDT", 29, 73.5, 10, 10, '1m',))  # 1min
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_14', second='4',
-                      args=("MASKUSDT", 29, 73.5, 10, 10, '1m',))  # 1min
+                      args=("MASKUSDT", 26, 73.5, 10, 10, '1m',))  # 1min
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_15', second='4',
                       args=("UNFIUSDT", 29, 73.5, 10, 10, '1m',))  # 1min
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_16', second='4',
@@ -62,8 +66,19 @@ if __name__ == '__main__':  # 25
                       args=("XTZUSDT", 29, 73.5, 10, 10, '1m',))  # 1min
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_21', second='5',
                       args=("THETAUSDT", 29, 73.5, 10, 10, '1m',))  # 1min
-    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_22', second='5',
+
+    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_22', second='6',
                       args=("KAVAUSDT", 29, 73.5, 10, 10, '1m',))  # 1min
+    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_221', minute=minute_3, second='6',
+                      args=("KAVAUSDT", 29, 73.5, 10, 10, '3m',))  # 3min
+    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_222', minute=minute_5, second='6',
+                      args=("KAVAUSDT", 29, 73.5, 10, 10, '5m',))  # 5min
+    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_223', minute=minute_15, second='6',
+                      args=("KAVAUSDT", 29, 73.5, 10, 10, '15m',))  # 15min
+    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_224', minute=minute_30, second='6',
+                      args=("KAVAUSDT", 29, 73.5, 10, 10, '30m',))  # 30min
+    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_225', minute='0', second='6',
+                      args=("KAVAUSDT", 29, 73.5, 10, 10, '1h',))  # 1hour
 
     scheduler.add_job(RunTrade.get_position, trigger='cron', id='TradeRunSp', second='*/10')
     scheduler.start()

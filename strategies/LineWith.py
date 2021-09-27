@@ -25,14 +25,19 @@ class LineWith(Base):
         if current_pos != 0:
             unRealizedProfit = float(pos_dict['unRealizedProfit'])
             entryPrice = float(pos_dict['entryPrice'])
-            winPrice = entryPrice * 1.01
+
             if self.enter_price_dict.get(symbol, 0) == 0 or self.enter_price_dict.get(symbol, 0) != entryPrice:
                 self.enter_price_dict[symbol] = entryPrice
-                self.win_price_dict[symbol] = winPrice
+                self.win_price_dict[symbol] = entryPrice * self.win_args_dict.get(symbol, 0)
                 self.high_price_dict[symbol] = entryPrice
                 self.low_price_dict[symbol] = entryPrice
-                if self.HYJ_jd_ss_dict.get(symbol, 0) == 1:
-                    self.order_flag_dict[symbol] = entryPrice * 0.985
+                HYJ_jd_ss_dict = self.redisc.get(f'{symbol}_jdss')
+                if HYJ_jd_ss_dict:
+                    jd_ss = int(HYJ_jd_ss_dict.decode("utf8"))  # 1停止
+                    if jd_ss == 1:
+                        self.order_flag_dict[symbol] = entryPrice * self.add_args_dict.get(symbol, 0)
+                    else:
+                        self.order_flag_dict[symbol] = 0
                 else:
                     self.order_flag_dict[symbol] = 0
             self.unRealizedProfit_dict[symbol] = unRealizedProfit
@@ -71,9 +76,11 @@ class LineWith(Base):
                     self.unRealizedProfit_dict[symbol] = 0
                     self.lowProfit_dict[symbol] = 0
                     HYJ_jd_first = f'回补仓位,{symbol},last_price:{self.last_price_dict.get(symbol, 0)}'
-                    HYJ_jd_tradeType = '开多'
+                    HYJ_jd_tradeType = '补仓'
                     HYJ_jd_curAmount = f'{self.order_flag_dict.get(symbol)}'
                     HYJ_jd_remark = f'回补仓位,留意仓位:{trading_size}'
+                    if "code" in res_buy:
+                        HYJ_jd_remark += f'{res_buy}'
                     self.wx_send_msg(HYJ_jd_first, HYJ_jd_tradeType, HYJ_jd_curAmount, HYJ_jd_remark)
 
             elif self.pos_dict.get(symbol, 0) > 0 and now_enter_price > 0:  # 多单持仓
@@ -88,7 +95,7 @@ class LineWith(Base):
                     HYJ_jd_first = "止盈平多:交易对:%s,最大浮亏损:%s,最大浮利润:%s,当前浮利润:%s,仓位:%s" % (
                         symbol, self.lowProfit_dict.get(symbol, 0), self.maxunRealizedProfit_dict.get(symbol, 0),
                         self.unRealizedProfit_dict.get(symbol, 0), trading_size)
-                    HYJ_jd_tradeType = "平多"
+                    HYJ_jd_tradeType = "止盈"
                     HYJ_jd_curAmount = f"{now_enter_price}"
                     HYJ_jd_remark = "预计利润:%s,最新价:%s,最高价:%s,最低价:%s" % (
                         Profit, self.last_price_dict.get(symbol, 0), self.high_price_dict.get(symbol, 0),

@@ -8,5 +8,6 @@ pandas
 python-socketio
 websocket-client
 apscheduler
+redis
 
 
