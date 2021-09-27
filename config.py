@@ -16,6 +16,8 @@ dingding_token = ""  # 钉钉webhook的access_token
 wx_openid = ""  # 关注简道斋后发送openid得到的那一串字符就是这个
 
 tactics_flag = 0  # 此为机器人执行策略计算无信号是否发送钉钉消息，约5分钟发送一次，1为发送，不发送请留空或其他值
+
+# 配置[币对，下单数量，止盈参数，回调补仓参数]
 symbols_conf = [["AAVEUSDT", 0.1, 1.006, 0.985],  # ok
                 ["KSMUSDT", 0.3, 1.006, 0.985],  # ok
                 ["UNIUSDT", 1.0, 1.006, 0.985],  # ok
