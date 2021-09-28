@@ -24,7 +24,7 @@ config.py的symbols_conf配置，币对的后一个值为每个币下单的量�
 止盈后再开仓:在LineWith.py的35行self.order_flag_dict[symbol] = entryPrice * 0.985，entryPrice为上一次的持仓价，
 在未出来平仓信号前，如果已经止盈了，当最新价低于entryPrice * 0.985，就又开一次仓。
 
-
+加仓: config.py里的add_pos_flag=1为开启加仓，add_pos_amount=0为不限制加仓次数，当add_pos_amount = 1，这个值大于0时，加仓次数等于这个值
 ## 以下为策略在tradingview进行的回测
 btcusdt
 ![](https://github.com/mn3711698/mrm/blob/main/btcusdt.png)
@@ -56,6 +56,8 @@ zecusdt
 ## windows使用说明(路径写死了)
 安装redis，并启动。
 
+TA-Lib的安装 请参数链接 https://blog.csdn.net/weixin_45544350/article/details/102873988 安装
+
 下载本项目代码压缩包，放在C盘根目录下，解压，最终代码在C:\mrm\下。如果是git下载，也请代码放在C:\mrm\下，建议使用git下载，方便后续更新
 
 先下载 https://download.microsoft.com/download/5/f/7/5f7acaeb-8363-451f-9425-68a90f98b238/visualcppbuildtools_full.exe
@@ -77,6 +79,8 @@ zecusdt
 
 ## linux使用说明(路径写死了)
 安装redis，并启动。
+
+TA-Lib的安装 请参数链接 https://blog.csdn.net/tumin999/article/details/103364555 安装
 
 下载本项目代码压缩包，放在/var/games/目录下，解压，最终代码在/var/games/mrm/下。
 
@@ -100,6 +104,8 @@ zecusdt
 建议使用git命令来下载，这样更新就不影响。
 
 # 更新日志
+
+2021-09-28  增加加仓开关，默认关闭
 
 2021-09-27  增加redis缓存,让重启也能保持补仓状态值。
 
