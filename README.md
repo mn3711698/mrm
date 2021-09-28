@@ -80,7 +80,7 @@ TA-Lib的安装 请参数链接 https://blog.csdn.net/weixin_45544350/article/de
 ## linux使用说明(路径写死了)
 安装redis，并启动。
 
-TA-Lib的安装 请参数链接 https://blog.csdn.net/tumin999/article/details/103364555 安装
+TA-Lib的安装 请参数链接 https://blog.csdn.net/weixin_43832593/article/details/104021882 安装
 
 下载本项目代码压缩包，放在/var/games/目录下，解压，最终代码在/var/games/mrm/下。
 
