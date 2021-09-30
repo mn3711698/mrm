@@ -70,7 +70,7 @@ class TradeRun:
                 try:
                     data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
                 except Exception as e:
-                    self.bugcode(f"{e}")
+                    self.bugcode(f"get_kline_data:{e}")
                     data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
                 if isinstance(data, list):
                     if len(data):
@@ -100,6 +100,6 @@ class TradeRun:
                         event = Event(EVENT_POS, {"symbol": symbolm, "pos": item})
                         self.broker.event_engine.put(event)
             else:
-                self.bugcode(f"{info}")
+                self.bugcode(f"get_position:{info}")
         except:
             self.bugcode(traceback, "TradeRun_get_position")
