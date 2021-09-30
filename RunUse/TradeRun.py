@@ -67,7 +67,11 @@ class TradeRun:
         try:
 
             if symbol in self.symbols_dict:
-                data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
+                try:
+                    data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
+                except Exception as e:
+                    self.bugcode(f"{e}")
+                    data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
                 if isinstance(data, list):
                     if len(data):
                         kline_time = data[-1][0]
@@ -85,7 +89,6 @@ class TradeRun:
     def get_position(self):
         try:
             info = self.broker.binance_http.get_position_info()
-            # print(info)
             if isinstance(info, list):
                 for item in info:
                     symbolm = item["symbol"]
