@@ -13,11 +13,21 @@ class LineWith(Base):
         current_pos = float(pos_dict['positionAmt'])
         pos = self.pos_dict.get(symbol, 0)
         if pos != current_pos:  # 检查仓位是否是一一样的.
-            if current_pos == 0:
+            open_orders = self.broker.binance_http.get_open_orders(symbol)
+            buy_flag = 0
+            sell_flag = 0
+            if isinstance(open_orders, list) and len(open_orders) > 0:
+                for o in open_orders:
+                    if o["side"] == 'BUY':  # 开多未成交
+                        buy_flag = 1
+                    elif o["side"] == 'SELL':  # 平仓未成交
+                        sell_flag = 1
+
+            if current_pos == 0 and buy_flag == 0:  # 无持仓且不存在开仓单
                 msg = f"仓位检查:{symbol},交易所帐户仓位为0，无持仓，系统仓位为:{pos},重置为0"
                 self.dingding(msg, symbols=symbol)
                 self.pos_dict[symbol] = 0
-            elif current_pos != 0:
+            elif current_pos != 0 and sell_flag == 0:  # 有持仓且不存在平仓单
                 msg = f"仓位检查:{symbol},交易所帐户仓位为:{current_pos},有持仓,系统仓位为:{pos},重置为:{current_pos}"
                 self.dingding(msg, symbols=symbol)
                 self.pos_dict[symbol] = current_pos
