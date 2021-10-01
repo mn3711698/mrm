@@ -9,6 +9,13 @@ config.py的symbols_conf配置，币对的后一个值为每个币下单的量�
 可以修改为每个币最低下单量，资金为100U就可以跑，如果资金不够，建议少跑几个币。
 
 
+## 收益图
+
+![](https://github.com/mn3711698/mrm/blob/main/win1.png)
+
+![](https://github.com/mn3711698/mrm/blob/main/win2.png)
+
+
 # 授权说明(2021-10-1)
 
 所有新使用者都可以白嫖一个月的最低级(下边的1)。一个月后不付费将无法使用。
