@@ -93,25 +93,10 @@ zecusdt
 注意:持仓方向是单向(双向持仓要改为单向否则无法下单)，杠杆是交易所默认未进行另外设定
 
 ## linux使用说明(路径写死了)
-安装redis，并启动。
 
-TA-Lib的安装 请参数链接 https://blog.csdn.net/weixin_43832593/article/details/104021882 安装
+安装请看  mrm在linux系统安装部署说明.doc文件
 
-下载本项目代码压缩包，放在/var/games/目录下，解压，最终代码在/var/games/mrm/下。
-
-如果是git下载，也请代码放在/var/games/mrm/下，建议使用git下载，方便后续更新
-
-安装相关库(只支持python3)  pip3 install -r requirements.txt 或 pip install -r requirements.txt
-
-填好config.py里边的配置项，确认python版本为python3.6，strategies下的base_l36.so重命名为base.so
-
-到此所有准备工作都做好了。在项目目录/var/games/mrm/下执行python3 Run.py 或python Run.py ,就可以躺着赚钱了
-
-相关持仓及订单信息请看币安的网页或者APP对应的交易对下的数据。
-
-建议使用Supervisor启动
-
-如果后续有更新代码，可以直接git下载就好了。重新执行python3 Start.py就好了
+如果后续有更新代码，可以直接git下载就好了。在/var/games/mrm目录下执行git pull就可以更新代码了。
 
 注意:持仓方向是单向(双向持仓要改为单向否则无法下单)，杠杆是交易所默认未进行另外设定
 
