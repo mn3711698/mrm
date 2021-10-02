@@ -82,22 +82,9 @@ zecusdt
 # TA-Lib的安装请自行百度
 
 ## windows使用说明(路径写死了)
-安装redis，并启动。
+如果会git就用git下载代码，不会就全按说明进行。
 
-TA-Lib的安装 请参数链接 https://blog.csdn.net/weixin_45544350/article/details/102873988 安装
-
-下载本项目代码压缩包，放在C盘根目录下，解压，最终代码在C:\mrm\下。如果是git下载，也请代码放在C:\mrm\下，建议使用git下载，方便后续更新
-
-先下载 https://download.microsoft.com/download/5/f/7/5f7acaeb-8363-451f-9425-68a90f98b238/visualcppbuildtools_full.exe
-安装时，直接下一步，不需要选择其他的。
-
-安装相关库(只支持python3)  pip3 install -r requirements.txt 或 pip install -r requirements.txt
-
-填好config.py里边的配置项，确认python是不是64版本，如果使用的是python3.7要将strategies下的base_w37.pyd重命名为base.pyd,
-如果使用的是python3.8要将strategies下的base_w38.pyd重命名为base.pyd
-
-
-到此，准备工作做好。在项目目录C:\mrm\下执行python3 Run.py,就可以躺着赚钱了
+安装步骤请参考: mrm在windows系统安装部署说明.doc文件
 
 相关持仓及订单信息请看币安的网页或者APP对应的交易对下的数据。
 
@@ -132,6 +119,8 @@ TA-Lib的安装 请参数链接 https://blog.csdn.net/weixin_43832593/article/de
 建议使用git命令来下载，这样更新就不影响。
 
 # 更新日志
+
+2021-10-02  增加安装说明。
 
 2021-09-28  修复止盈平多订单未成交，导致重复提交平多，造成开空单问题，无故导致可能亏损
 
