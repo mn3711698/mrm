@@ -110,6 +110,8 @@ class LineWith(Base):
                     HYJ_jd_remark = "预计利润:%s,最新价:%s,最高价:%s,最低价:%s" % (
                         Profit, self.last_price_dict.get(symbol, 0), self.high_price_dict.get(symbol, 0),
                         self.low_price_dict.get(symbol, 0))
+                    if "code" in res_sell:
+                        HYJ_jd_remark += f'{res_sell}'
                     self.high_price_dict[symbol] = 0
                     self.low_price_dict[symbol] = 0
                     self.maxunRealizedProfit_dict[symbol] = 0
@@ -124,6 +126,8 @@ class LineWith(Base):
                 HYJ_jd_tradeType = '平空'
                 HYJ_jd_curAmount = f'{self.order_flag_dict.get(symbol)}'
                 HYJ_jd_remark = f'平空,留意仓位, enter_price:{now_enter_price}'
+                if "code" in res_buy:
+                    HYJ_jd_remark += f'{res_buy}'
                 self.enter_price_dict[symbol] = 0
                 self.high_price_dict[symbol] = 0
                 self.low_price_dict[symbol] = 0
@@ -131,3 +135,5 @@ class LineWith(Base):
                 self.unRealizedProfit_dict[symbol] = 0
                 self.lowProfit_dict[symbol] = 0
                 self.wx_send_msg(HYJ_jd_first, HYJ_jd_tradeType, HYJ_jd_curAmount, HYJ_jd_remark)
+
+            print(f'{symbol}', 'ws接收数据成功')
