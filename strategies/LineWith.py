@@ -136,4 +136,5 @@ class LineWith(Base):
                 self.lowProfit_dict[symbol] = 0
                 self.wx_send_msg(HYJ_jd_first, HYJ_jd_tradeType, HYJ_jd_curAmount, HYJ_jd_remark)
 
-            print(f'{symbol}', 'ws接收数据成功')
+            if self.tactics_flag == 1:
+                print(f'{symbol}', 'ws接收数据成功')
