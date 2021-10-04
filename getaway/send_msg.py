@@ -28,7 +28,7 @@ def dingding(msg, symbols):
 
     except:
         bugcode(traceback, ctype='singlecoin_dingding')
-    if tactics_flag == 1:
+    if tactics_flag == 2:
         print(msg)
 
 
