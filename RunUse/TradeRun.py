@@ -82,7 +82,7 @@ class TradeRun:
                             self.broker.event_engine.put(event)
                             self.kline_time_dict[symbol] = kline_time
                 else:
-                    self.bugcode(f"{data}")
+                    self.bugcode(f"{symbol},{interval},{data}")
         except:
             self.bugcode(traceback, "TradeRun_get_kline_data")
 
