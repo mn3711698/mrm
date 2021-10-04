@@ -72,5 +72,40 @@ symbols_conf2 = [["AXSUSDT", 1, 1.006, 0.985],
                  # ["FTTUSDT", 1.0, 28, 72.5, 10, 10], 无usdt
                 ]
 
+
+symbols_conf3 = [["ARUSDT", 0.2, 1.006, 0.98],  # ok
+                 ["CELOUSDT", 1, 1.006, 0.98],  # ok
+                 ["RLCUSDT", 1.5, 1.006, 0.98],  # ok
+                 ["LITUSDT", 1.5, 1.006, 0.98],  # ok
+                 ["C98USDT", 2, 1.006, 0.98],  # ok
+                 ["MTLUSDT", 2, 1.006, 0.98],
+                 ["1INCHUSDT", 2, 1.006, 0.98],
+                 ["CRVUSDT", 2.5, 1.006, 0.98],
+                 ["SXPUSDT", 2.6, 1.006, 0.98],
+                 ["AUDIOUSDT", 3, 1.006, 0.98],  # ok
+
+                 ["TOMOUSDT", 3, 1.006, 0.98],  # ok
+                 ["ADAUSDT", 2, 1.008, 0.98],
+                 ["ICXUSDT", 2, 1.006, 0.98],
+                 ["BAKEUSDT", 3, 1.006, 0.98],
+                 ["BELUSDT", 3, 1.006, 0.98],
+                 ["ALGOUSDT", 3.5, 1.006, 0.98],
+                 ["CTKUSDT", 3, 1.006, 0.98],  # ok
+                 ["KNCUSDT", 4, 1.006, 0.98],
+                 ["ENJUSDT", 4, 1.006, 0.98],
+                 ["FTMUSDT", 4, 1.006, 0.98],
+
+                 ["DODOUSDT", 4.4, 1.006, 0.98],  # ok
+                 ["MATICUSDT", 5, 1.006, 0.98],
+                 ["IOTAUSDT", 4.7, 1.006, 0.98],
+                 ["STORJUSDT", 5, 1.006, 0.98],
+                 ["XRPUSDT", 6, 1.006, 0.98],  # ok
+                 ["RENUSDT", 6, 1.006, 0.98],  # ok
+                 ["SFPUSDT", 6, 1.006, 0.98],
+                 ["ZRXUSDT", 7.3, 1.006, 0.98],
+                 ["ALPHAUSDT", 7, 1.006, 0.98],
+                 ["ATAUSDT", 7, 1.006, 0.98],  # ok
+                 ]
+
 redis_pool = redis.ConnectionPool(host='127.0.0.1', port='6379', db='0', password='')
 redisc = redis.StrictRedis(connection_pool=redis_pool)
