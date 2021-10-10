@@ -6,7 +6,7 @@
 import traceback
 from utils.brokers import Broker
 from getaway.binance_http import BinanceFutureHttp
-from getaway.send_msg import bugcode, getToday
+from getaway.send_msg import bugcode, getToday, dingding
 from constant.constant import (EVENT_POS, EVENT_KLINE)
 from utils.event import EventEngine, Event
 from strategies.LineWith import LineWith
@@ -25,6 +25,7 @@ class TradeRun:
         self.conf_initialize(symbols_conf)
         self.bugcode = bugcode
         self.getToday = getToday
+        self.dingding = dingding
         self.min_volume = 0.001
         self.key = key
         self.secret = secret
@@ -75,15 +76,17 @@ class TradeRun:
                 if isinstance(data, list):
                     if len(data):
                         kline_time = data[-1][0]
-                        if kline_time != self.kline_time_dict.get(symbol, 0):
+                        if kline_time != self.kline_time_dict.get(symbol+interval, 0):
                             edata = {'symbol': symbol, "data": data, "sold": sold, "bought": bought,
                                      "sold_bar": sold_bar, "bought_bar": bought_bar, 'interval': interval}
                             event = Event(EVENT_KLINE, edata)
                             self.broker.event_engine.put(event)
-                            self.kline_time_dict[symbol] = kline_time
+                            self.kline_time_dict[symbol+interval] = kline_time
                 else:
+                    self.dingding(f"注意是不是超并发了或者时间不对，{data}", symbol)
                     self.bugcode(f"{symbol},{interval},{data}")
         except:
+
             self.bugcode(traceback, "TradeRun_get_kline_data")
 
     def get_position(self):
@@ -93,13 +96,15 @@ class TradeRun:
                 for item in info:
                     symbolm = item["symbol"]
                     positionSide = item["positionSide"]
+                    current_pos = float(item['positionAmt'])
                     # 当持仓为多空双向，策略仅为多方向，只处理多方向的仓位
                     # if item['positionSide'] != 'LONG':
                     #     return
-                    if symbolm in self.symbols_dict and positionSide == 'BOTH':
+                    if symbolm in self.symbols_dict and positionSide == 'BOTH' and current_pos != 0:
                         event = Event(EVENT_POS, {"symbol": symbolm, "pos": item})
                         self.broker.event_engine.put(event)
             else:
+                self.dingding(f"注意是不是超并发了或时间不对，{info}", "position")
                 self.bugcode(f"get_position:{info}")
         except:
             self.bugcode(traceback, "TradeRun_get_position")
