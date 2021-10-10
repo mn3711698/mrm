@@ -245,7 +245,7 @@ if __name__ == '__main__':  # 25
                       args=("WAVESUSDT", 28, 75.5, 10, 10, '5m',))  # 5min
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_4_5', minute=minute_5, second='17',
                       args=("LINKUSDT", 28, 75.5, 10, 10, '5m',))  # 5min
-    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_6', minute=minute_5, second='17',
+    scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_6_5', minute=minute_5, second='17',
                       args=("HNTUSDT", 28, 75.5, 10, 10, '5m',))  # 5min
     scheduler.add_job(RunTrade.get_kline_data, trigger='cron', id='TradeRunS1_7_5', minute=minute_5, second='17',
                       args=("DYDXUSDT", 28, 75.5, 10, 10, '5m',))  # 5min
