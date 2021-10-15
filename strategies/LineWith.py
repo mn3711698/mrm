@@ -28,7 +28,16 @@ class LineWith(Base):
                 self.dingding(msg, symbols=symbol)
                 self.pos_dict[symbol] = 0
             elif current_pos != 0 and sell_flag == 0:  # 有持仓且不存在平仓单
-                msg = f"仓位检查:{symbol},交易所帐户仓位为:{current_pos},有持仓,系统仓位为:{pos},重置为:{current_pos}"
+                info = self.broker.binance_http.get_position_info()
+                if isinstance(info, list):
+                    for item in info:
+                        symbolm = item["symbol"]
+                        positionSide = item["positionSide"]
+                        if symbolm == symbol and positionSide == 'BOTH':
+                            current_pos = float(item['positionAmt'])
+                if current_pos == 0:
+                    return
+                msg = f"仓位检查:{symbol},交易所仓位为:{current_pos},系统仓位为:{pos},重置为:{current_pos}"
                 self.dingding(msg, symbols=symbol)
                 self.pos_dict[symbol] = current_pos
 
@@ -41,7 +50,7 @@ class LineWith(Base):
                 self.win_price_dict[symbol] = entryPrice * self.win_args_dict.get(symbol, 0)
                 self.high_price_dict[symbol] = entryPrice
                 self.low_price_dict[symbol] = entryPrice
-                HYJ_jd_ss_dict = self.redisc.get(f'{symbol}_jdss')
+                HYJ_jd_ss_dict = self.redisc.get('%s_jdss' % symbol)
                 if HYJ_jd_ss_dict:
                     jd_ss = int(HYJ_jd_ss_dict.decode("utf8"))  # 1停止
                     if jd_ss == 1:

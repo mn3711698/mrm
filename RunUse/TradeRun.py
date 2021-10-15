@@ -71,7 +71,7 @@ class TradeRun:
                 try:
                     data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
                 except Exception as e:
-                    self.bugcode(f"get_kline_data:{e}")
+                    self.bugcode(f"{symbol},{interval},get_kline_data:{e}")
                     data = self.broker.binance_http.get_kline_interval(symbol=symbol, interval=interval, limit=100)
                 if isinstance(data, list):
                     if len(data):
@@ -96,11 +96,11 @@ class TradeRun:
                 for item in info:
                     symbolm = item["symbol"]
                     positionSide = item["positionSide"]
-                    current_pos = float(item['positionAmt'])
+                    # current_pos = float(item['positionAmt'])
                     # 当持仓为多空双向，策略仅为多方向，只处理多方向的仓位
                     # if item['positionSide'] != 'LONG':
                     #     return
-                    if symbolm in self.symbols_dict and positionSide == 'BOTH' and current_pos != 0:
+                    if symbolm in self.symbols_dict and positionSide == 'BOTH':
                         event = Event(EVENT_POS, {"symbol": symbolm, "pos": item})
                         self.broker.event_engine.put(event)
             else:
